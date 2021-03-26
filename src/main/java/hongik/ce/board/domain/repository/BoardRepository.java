@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     // 검색 직접 호출
+    List<BoardEntity> findByTitleContaining(String keyword);
 }
 

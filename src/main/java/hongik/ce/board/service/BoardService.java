@@ -43,13 +43,22 @@ public class BoardService {
         return boardDtoList;
     }
 
-    /*
+
     // 여기서 부터 작성, 주석을 해제하고 사용하세요
     // 게시글 상세 내용 조회 처리
     @Transactional
     public BoardDto getPost(Long id) {
-
         // 게시글의 entity 내용을 조회할 수 있도록 작성
+        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
+        BoardEntity boardEntity = boardEntityWrapper.get();
+
+        BoardDto boardDTO = BoardDto.builder()
+                .id(boardEntity.getId())
+                .title(boardEntity.getTitle())
+                .content(boardEntity.getContent())
+                .writer(boardEntity.getWriter())
+                .createdDate(boardEntity.getCreatedDate())
+                .build();
 
         return boardDTO;
     }
@@ -57,9 +66,8 @@ public class BoardService {
     // 게시글 삭제
     @Transactional
     public void deletePost(Long id) {
-
         // 게시글을 삭제할 수 있도록 작성
-
+        boardRepository.deleteById(id);
     }
 
     // 게시글 검색
@@ -69,6 +77,11 @@ public class BoardService {
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         // 게시글을 검색할 수 있도록 작성
+        if (boardEntities.isEmpty()) return boardDtoList;
+
+        for (BoardEntity boardEntity : boardEntities) {
+            boardDtoList.add(this.convertEntityToDto(boardEntity));
+        }
 
         return boardDtoList;
     }
@@ -83,5 +96,5 @@ public class BoardService {
                 .createdDate(boardEntity.getCreatedDate())
                 .build();
     }
-    */
+
 }
